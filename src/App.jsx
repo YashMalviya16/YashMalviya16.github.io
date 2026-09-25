@@ -8,6 +8,7 @@ import Marquee from './components/Marquee.jsx';
 import About from './components/About.jsx';
 import Experience from './components/Experience.jsx';
 import Projects from './components/Projects.jsx';
+import Beyond from './components/Beyond.jsx';
 import Contact from './components/Contact.jsx';
 import Footer from './components/Footer.jsx';
 import Cursor from './components/Cursor.jsx';
@@ -34,6 +35,7 @@ export default function App() {
         <About />
         <Experience />
         <Projects />
+        <Beyond />
         <Contact />
       </main>
       <Footer />

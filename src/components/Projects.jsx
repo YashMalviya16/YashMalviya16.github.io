@@ -1,17 +1,25 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react';
-import { profile, projects } from '../data.js';
+import { archive, profile, projects } from '../data.js';
 import { lockScroll } from '../lib/smoothScroll.js';
 import useMediaQuery from '../lib/useMediaQuery.js';
 import { ArrowRight, Close, External, GitHub } from './Icons.jsx';
+import ProjectCover from './ProjectCover.jsx';
 import Reveal, { SplitHeading, ease } from './Reveal.jsx';
 
 const FILTERS = [
   { id: 'all', label: 'All' },
-  { id: 'ai', label: 'AI / ML' },
-  { id: 'bi', label: 'BI / Analytics' },
+  { id: 'ai', label: 'Agentic & LLM' },
+  { id: 'data', label: 'Data & Geo' },
+  { id: 'research', label: 'Research' },
 ];
-const KIND = { ai: 'AI / ML', bi: 'BI / Analytics' };
+const allProjects = [...projects, ...archive];
+
+function Media({ p, eager }) {
+  return p.image
+    ? <img src={p.image} alt="" width="960" height="600" loading={eager ? undefined : 'lazy'} decoding="async" />
+    : <ProjectCover art={p.art} seed={p.id} />;
+}
 
 function ProjectModal({ project, onClose }) {
   const closeRef = useRef(null);
@@ -54,15 +62,9 @@ function ProjectModal({ project, onClose }) {
           <Close />
         </button>
         <div className="modal-media">
-          <motion.img
-            src={project.image}
-            alt=""
-            width="960"
-            height="540"
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.1, ease }}
-          />
+          <motion.div className="modal-media-inner" initial={{ scale: 1.2 }} animate={{ scale: 1 }} transition={{ duration: 1.1, ease }}>
+            <Media p={project} eager />
+          </motion.div>
         </div>
         <motion.div
           className="modal-body"
@@ -71,7 +73,7 @@ function ProjectModal({ project, onClose }) {
           variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
         >
           {[
-            <span className="card-kind" key="k">{KIND[project.category]}</span>,
+            <span className="card-kind" key="k">{project.kicker}</span>,
             <h3 id="modal-title" key="t">{project.title}</h3>,
             <p key="s">{project.summary}</p>,
             <ul key="d">{project.details.map((d) => <li key={d}>{d}</li>)}</ul>,
@@ -82,7 +84,7 @@ function ProjectModal({ project, onClose }) {
                   <GitHub /> View on GitHub <External />
                 </a>
               ) : (
-                project.linkLabel && <span className="muted-note">{project.linkLabel}. Access available on request.</span>
+                project.linkLabel && <span className="muted-note">{project.linkLabel}</span>
               )}
             </div>,
           ].map((el) => (
@@ -109,11 +111,11 @@ function ProjectCard({ p, index, onOpen }) {
       transition={{ duration: 0.6, ease, delay: (index % 3) * 0.07 }}
     >
       <div className="card-media">
-        <img src={p.image} alt="" width="960" height="600" loading="lazy" decoding="async" />
+        <Media p={p} />
         <span className="card-num">{String(index + 1).padStart(2, '0')}</span>
       </div>
       <div className="card-body">
-        <span className="card-kind">{KIND[p.category]}</span>
+        <span className="card-kind">{p.kicker}</span>
         <h3>
           <button className="card-link" onClick={() => onOpen(p.id)} aria-haspopup="dialog">
             {p.title}
@@ -129,12 +131,64 @@ function ProjectCard({ p, index, onOpen }) {
   );
 }
 
+// Compact list of earlier projects. On desktop, hovering a row shows a floating preview that follows the cursor.
+function Archive({ onOpen }) {
+  const fine = useMediaQuery('(pointer: fine)');
+  const [hover, setHover] = useState(null);
+  const x = useSpring(0, { stiffness: 250, damping: 28 });
+  const y = useSpring(0, { stiffness: 250, damping: 28 });
+  const hovered = archive.find((p) => p.id === hover);
+
+  return (
+    <section className="archive" aria-labelledby="archive-title" onPointerMove={(e) => { x.set(e.clientX); y.set(e.clientY); }}>
+      <div className="container">
+        <Reveal as="h3" id="archive-title" className="col-title">Earlier work</Reveal>
+        <ul className="archive-list" onPointerLeave={() => setHover(null)}>
+          {archive.map((p, i) => (
+            <motion.li
+              key={p.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, ease, delay: i * 0.05 }}
+            >
+              <button className="archive-row" onClick={() => onOpen(p.id)} onPointerEnter={() => setHover(p.id)} data-cursor="View" aria-haspopup="dialog">
+                <span className="archive-title">{p.title}</span>
+                <span className="archive-kind">{p.kicker}</span>
+                <ArrowRight />
+              </button>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
+
+      {fine && (
+        <motion.div className="archive-preview" style={{ x, y }} aria-hidden="true">
+          <AnimatePresence>
+            {hovered && (
+              <motion.img
+                key={hovered.id}
+                src={hovered.image}
+                alt=""
+                initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, ease }}
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
+    </section>
+  );
+}
+
 export default function Projects() {
   const [filter, setFilter] = useState('all');
   const [openId, setOpenId] = useState(null);
   const close = useCallback(() => setOpenId(null), []);
   const shown = projects.filter((p) => filter === 'all' || p.category === filter);
-  const openProject = projects.find((p) => p.id === openId);
+  const openProject = allProjects.find((p) => p.id === openId);
 
   // Desktop with a mouse: pin the section and move the cards sideways as you scroll down.
   const horizontal = useMediaQuery('(min-width: 900px) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
@@ -159,6 +213,7 @@ export default function Projects() {
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 });
 
   return (
+    <>
     <section
       id="projects"
       ref={sectionRef}
@@ -170,7 +225,7 @@ export default function Projects() {
           <div className="section-head">
             <Reveal as="span" className="eyebrow">Projects</Reveal>
             <SplitHeading text="Selected work." />
-            <Reveal as="p" className="lead" delay={0.1}>Research, machine learning and analytics. Select a project for details.</Reveal>
+            <Reveal as="p" className="lead" delay={0.1}>Agentic AI, data platforms and published research. Select a project for details.</Reveal>
           </div>
 
           <Reveal className="filters" role="group" aria-label="Filter projects">
@@ -213,9 +268,13 @@ export default function Projects() {
         )}
       </div>
 
-      <AnimatePresence>
-        {openProject && <ProjectModal project={openProject} onClose={close} />}
-      </AnimatePresence>
     </section>
+
+    <Archive onOpen={setOpenId} />
+
+    <AnimatePresence>
+      {openProject && <ProjectModal project={openProject} onClose={close} />}
+    </AnimatePresence>
+    </>
   );
 }

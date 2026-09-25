@@ -61,7 +61,7 @@ export default function Contact() {
       </div>
       <div className="container contact-grid">
         <Reveal>
-          <p className="lead">I'm open to data science and machine learning roles, research collaborations and project work. The fastest way to reach me is email or LinkedIn.</p>
+          <p className="lead">Applied AI in the public sector, research collaborations, speaking or judging: I'd love to hear from you. The fastest way to reach me is email or LinkedIn.</p>
 
           <ul className="contact-list">
             {items.map((it) => {

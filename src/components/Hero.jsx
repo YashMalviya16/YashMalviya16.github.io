@@ -93,7 +93,7 @@ export default function Hero({ ready }) {
       <motion.div className="container hero-grid" style={{ y: contentY, opacity: contentOpacity }} initial="hidden" animate={state}>
         <div>
           <motion.span className="eyebrow" variants={up(0.1)}>
-            <i className="live-dot" aria-hidden="true" /> {profile.role} · {profile.location.split(',')[0]}
+            <i className="live-dot" aria-hidden="true" /> {profile.role} · {profile.location}
           </motion.span>
 
           <h1 className="hero-title" aria-label={profile.name}>
@@ -103,7 +103,7 @@ export default function Hero({ ready }) {
           </h1>
 
           <motion.p className="hero-line" variants={up(0.7)}>
-            I build with <RotatingWord words={profile.focus} />
+            Applied AI · <RotatingWord words={profile.focus} />
           </motion.p>
           <motion.p className="lead" variants={up(0.8)}>{profile.tagline}</motion.p>
 
@@ -146,7 +146,7 @@ export default function Hero({ ready }) {
             <img src={profile.portrait} alt={`Portrait of ${profile.name}`} width="800" height="1000" fetchPriority="high" />
             <div className="portrait-shine" aria-hidden="true" />
           </div>
-          <div className="status"><i aria-hidden="true" /> Open to opportunities</div>
+          <div className="status"><i aria-hidden="true" /> {profile.status}</div>
         </motion.div>
       </motion.div>
 
