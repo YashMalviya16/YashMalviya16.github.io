@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
-import { projects } from '../data.js';
-import { Close, External, GitHub } from './Icons.jsx';
-import Reveal, { ease } from './Reveal.jsx';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { profile, projects } from '../data.js';
+import { lockScroll } from '../lib/smoothScroll.js';
+import useMediaQuery from '../lib/useMediaQuery.js';
+import { ArrowRight, Close, External, GitHub } from './Icons.jsx';
+import Reveal, { SplitHeading, ease } from './Reveal.jsx';
 
 const FILTERS = [
   { id: 'all', label: 'All' },
@@ -19,12 +21,11 @@ function ProjectModal({ project, onClose }) {
     closeRef.current?.focus();
     const onKey = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
+    lockScroll(true);
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = overflow;
-      previouslyFocused?.focus?.();
+      lockScroll(false);
+      previouslyFocused?.focus?.({ preventScroll: true });
     };
   }, [onClose]);
 
@@ -35,7 +36,8 @@ function ProjectModal({ project, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.25 }}
+      data-lenis-prevent
     >
       <motion.div
         className="modal"
@@ -43,39 +45,87 @@ function ProjectModal({ project, onClose }) {
         aria-modal="true"
         aria-labelledby="modal-title"
         onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0, y: 32, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 16, scale: 0.98 }}
-        transition={{ duration: 0.35, ease }}
+        initial={{ opacity: 0, y: 60, clipPath: 'inset(20% 10% 20% 10% round 20px)' }}
+        animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 20px)' }}
+        exit={{ opacity: 0, y: 30, clipPath: 'inset(10% 5% 10% 5% round 20px)' }}
+        transition={{ duration: 0.55, ease }}
       >
         <button ref={closeRef} className="modal-close" onClick={onClose} aria-label="Close project details">
           <Close />
         </button>
         <div className="modal-media">
-          <img src={project.image} alt="" width="960" height="540" />
+          <motion.img
+            src={project.image}
+            alt=""
+            width="960"
+            height="540"
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.1, ease }}
+          />
         </div>
-        <div className="modal-body">
-          <span className="card-kind">{KIND[project.category]}</span>
-          <h3 id="modal-title">{project.title}</h3>
-          <p>{project.summary}</p>
-          <ul>
-            {project.details.map((d) => <li key={d}>{d}</li>)}
-          </ul>
-          <ul className="chips" aria-label="Tools">
-            {project.tags.map((t) => <li className="chip" key={t}>{t}</li>)}
-          </ul>
-          <div className="modal-actions">
-            {project.link ? (
-              <a className="btn btn-primary" href={project.link} target="_blank" rel="noopener">
-                <GitHub /> View on GitHub <External />
-              </a>
-            ) : (
-              project.linkLabel && <span className="muted-note">{project.linkLabel}. Access available on request.</span>
-            )}
-          </div>
-        </div>
+        <motion.div
+          className="modal-body"
+          initial="hidden"
+          animate="show"
+          variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
+        >
+          {[
+            <span className="card-kind" key="k">{KIND[project.category]}</span>,
+            <h3 id="modal-title" key="t">{project.title}</h3>,
+            <p key="s">{project.summary}</p>,
+            <ul key="d">{project.details.map((d) => <li key={d}>{d}</li>)}</ul>,
+            <ul className="chips" aria-label="Tools" key="c">{project.tags.map((t) => <li className="chip" key={t}>{t}</li>)}</ul>,
+            <div className="modal-actions" key="a">
+              {project.link ? (
+                <a className="btn btn-primary" href={project.link} target="_blank" rel="noopener">
+                  <GitHub /> View on GitHub <External />
+                </a>
+              ) : (
+                project.linkLabel && <span className="muted-note">{project.linkLabel}. Access available on request.</span>
+              )}
+            </div>,
+          ].map((el) => (
+            <motion.div key={el.key} variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }}>
+              {el}
+            </motion.div>
+          ))}
+        </motion.div>
       </motion.div>
     </motion.div>
+  );
+}
+
+function ProjectCard({ p, index, onOpen }) {
+  return (
+    <motion.article
+      layout
+      className="card"
+      data-cursor="View"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      exit={{ opacity: 0, scale: 0.94 }}
+      transition={{ duration: 0.6, ease, delay: (index % 3) * 0.07 }}
+    >
+      <div className="card-media">
+        <img src={p.image} alt="" width="960" height="600" loading="lazy" decoding="async" />
+        <span className="card-num">{String(index + 1).padStart(2, '0')}</span>
+      </div>
+      <div className="card-body">
+        <span className="card-kind">{KIND[p.category]}</span>
+        <h3>
+          <button className="card-link" onClick={() => onOpen(p.id)} aria-haspopup="dialog">
+            {p.title}
+          </button>
+        </h3>
+        <p>{p.summary}</p>
+        <ul className="chips">
+          {p.tags.slice(0, 3).map((t) => <li className="chip" key={t}>{t}</li>)}
+        </ul>
+        <span className="card-more" aria-hidden="true">Details <ArrowRight /></span>
+      </div>
+    </motion.article>
   );
 }
 
@@ -86,15 +136,42 @@ export default function Projects() {
   const shown = projects.filter((p) => filter === 'all' || p.category === filter);
   const openProject = projects.find((p) => p.id === openId);
 
+  // Desktop with a mouse: pin the section and move the cards sideways as you scroll down.
+  const horizontal = useMediaQuery('(min-width: 900px) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
+  const [distance, setDistance] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!horizontal) return;
+    const measure = () => {
+      const track = trackRef.current;
+      if (track) setDistance(Math.max(0, track.scrollWidth - track.clientWidth));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, [horizontal, filter]);
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
+  const x = useSpring(useTransform(scrollYProgress, [0, 1], [0, -distance]), { stiffness: 140, damping: 30, mass: 0.4 });
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 });
+
   return (
-    <section id="projects">
-      <div className="container">
-        <div className="projects-top">
-          <Reveal className="section-head">
-            <span className="eyebrow">Projects</span>
-            <h2>Selected work.</h2>
-            <p className="lead">Research, machine learning and analytics projects. Select a project to see the details.</p>
-          </Reveal>
+    <section
+      id="projects"
+      ref={sectionRef}
+      className={horizontal ? 'projects-horizontal' : undefined}
+      style={horizontal ? { height: `calc(100vh + ${distance}px)` } : undefined}
+    >
+      <div className={horizontal ? 'projects-sticky' : undefined}>
+        <div className="container projects-top">
+          <div className="section-head">
+            <Reveal as="span" className="eyebrow">Projects</Reveal>
+            <SplitHeading text="Selected work." />
+            <Reveal as="p" className="lead" delay={0.1}>Research, machine learning and analytics. Select a project for details.</Reveal>
+          </div>
 
           <Reveal className="filters" role="group" aria-label="Filter projects">
             {FILTERS.map((f) => (
@@ -108,39 +185,32 @@ export default function Projects() {
           </Reveal>
         </div>
 
-        <motion.div className="project-grid" layout>
-          <AnimatePresence mode="popLayout">
-            {shown.map((p, i) => (
-              <motion.article
-                key={p.id}
-                layout
-                className="card"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.5, ease, delay: (i % 3) * 0.06 }}
-              >
-                <div className="card-media">
-                  <img src={p.image} alt="" width="960" height="600" loading="lazy" decoding="async" />
-                </div>
-                <div className="card-body">
-                  <span className="card-kind">{KIND[p.category]}</span>
-                  <h3>
-                    <button className="card-link" onClick={() => setOpenId(p.id)} aria-haspopup="dialog">
-                      {p.title}
-                    </button>
-                  </h3>
-                  <p>{p.summary}</p>
-                  <ul className="chips">
-                    {p.tags.slice(0, 3).map((t) => <li className="chip" key={t}>{t}</li>)}
-                  </ul>
-                </div>
-              </motion.article>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="project-viewport">
+          <motion.div ref={trackRef} className="project-track" style={horizontal ? { x } : undefined} layout={!horizontal}>
+            <AnimatePresence mode="popLayout">
+              {shown.map((p, i) => <ProjectCard key={p.id} p={p} index={i} onOpen={setOpenId} />)}
+            </AnimatePresence>
+            <motion.a
+              layout
+              key="more"
+              className="card card-end"
+              href={profile.links.github}
+              target="_blank"
+              rel="noopener"
+              data-cursor="Open"
+            >
+              <GitHub />
+              <strong>More on GitHub</strong>
+              <span>Code, notebooks and experiments</span>
+            </motion.a>
+          </motion.div>
+        </div>
+
+        {horizontal && (
+          <div className="container">
+            <div className="track-progress" aria-hidden="true"><motion.i style={{ scaleX: progress }} /></div>
+          </div>
+        )}
       </div>
 
       <AnimatePresence>

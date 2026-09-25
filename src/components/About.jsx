@@ -1,15 +1,14 @@
 import { motion } from 'motion/react';
 import { about } from '../data.js';
 import Reveal, { fadeUp, stagger } from './Reveal.jsx';
+import { Counter, ScrollText } from './ScrollText.jsx';
 
 export default function About() {
   return (
     <section id="about">
       <div className="container">
-        <Reveal className="section-head">
-          <span className="eyebrow">About</span>
-          <h2>Turning messy data into models and decisions.</h2>
-        </Reveal>
+        <Reveal as="span" className="eyebrow">About</Reveal>
+        <ScrollText text={about.statement} className="statement" />
 
         <div className="about-grid">
           <Reveal className="about-bio">
@@ -18,7 +17,7 @@ export default function About() {
             <div className="stats">
               {about.stats.map((s) => (
                 <div className="stat" key={s.label}>
-                  <strong>{s.value}</strong>
+                  <Counter value={s.value} />
                   <span>{s.label}</span>
                 </div>
               ))}
@@ -32,12 +31,21 @@ export default function About() {
             viewport={{ once: true, margin: '-80px' }}
             variants={stagger}
           >
-            {about.skills.map((g) => (
+            {about.skills.map((g, gi) => (
               <motion.div key={g.group} variants={fadeUp}>
-                <h3>{g.group}</h3>
-                <ul className="chips">
-                  {g.items.map((s) => <li className="chip" key={s}>{s}</li>)}
-                </ul>
+                <h3><span className="skill-index">0{gi + 1}</span>{g.group}</h3>
+                <motion.ul className="chips" variants={stagger}>
+                  {g.items.map((s) => (
+                    <motion.li
+                      className="chip"
+                      key={s}
+                      variants={{ hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1 } }}
+                      whileHover={{ y: -3 }}
+                    >
+                      {s}
+                    </motion.li>
+                  ))}
+                </motion.ul>
               </motion.div>
             ))}
           </motion.div>

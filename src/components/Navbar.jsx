@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
 import { nav, profile } from '../data.js';
 import { Close, Menu } from './Icons.jsx';
 
-export default function Navbar() {
+export default function Navbar({ ready = true }) {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  // Solid background once scrolled; slide away when scrolling down, come back when scrolling up.
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setScrolled(y > 12);
+    if (y > prev && y > 400) setHidden(true);
+    else if (y < prev) setHidden(false);
+  });
 
   // Scroll-spy: highlight the section currently in the middle of the viewport.
   useEffect(() => {
@@ -36,7 +40,12 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <header className={`nav${scrolled || open ? ' scrolled' : ''}`}>
+    <motion.header
+      className={`nav${scrolled || open ? ' scrolled' : ''}`}
+      initial={{ y: '-100%' }}
+      animate={{ y: ready && !(hidden && !open) ? '0%' : '-100%' }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: ready && !scrolled ? 0.9 : 0 }}
+    >
       <nav className="container" aria-label="Main">
         <a href="#top" className="brand" onClick={() => setOpen(false)}>
           {profile.name.split(' ')[0]}<span>.</span>
@@ -75,6 +84,7 @@ export default function Navbar() {
           </li>
         </ul>
       </nav>
-    </header>
+      <motion.div className="scroll-progress" style={{ scaleX: progress }} aria-hidden="true" />
+    </motion.header>
   );
 }

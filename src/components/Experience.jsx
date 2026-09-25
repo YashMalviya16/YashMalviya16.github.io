@@ -1,36 +1,44 @@
-import { motion } from 'motion/react';
+import { useRef } from 'react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import { education, experience } from '../data.js';
-import Reveal, { fadeUp, stagger } from './Reveal.jsx';
+import Reveal, { SplitHeading, ease } from './Reveal.jsx';
 
+// Vertical timeline whose accent line "draws" itself as you scroll through it.
 function Timeline({ children }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.75', 'end 0.6'] });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 24 });
+
   return (
-    <motion.ol
-      className="timeline"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-80px' }}
-      variants={stagger}
-    >
+    <ol className="timeline" ref={ref}>
+      <motion.span className="timeline-progress" style={{ scaleY }} aria-hidden="true" />
       {children}
-    </motion.ol>
+    </ol>
   );
 }
+
+const item = {
+  initial: { opacity: 0, x: -24 },
+  whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true, margin: '-100px' },
+  transition: { duration: 0.7, ease },
+};
 
 export default function Experience() {
   return (
     <section id="experience" className="alt">
       <div className="container">
-        <Reveal className="section-head">
-          <span className="eyebrow">Experience</span>
-          <h2>Where I've worked and studied.</h2>
-        </Reveal>
+        <div className="section-head">
+          <Reveal as="span" className="eyebrow">Experience</Reveal>
+          <SplitHeading text="Where I've worked and studied." />
+        </div>
 
         <div className="timeline-cols">
           <div>
             <h3 className="col-title">Work</h3>
             <Timeline>
               {experience.map((job) => (
-                <motion.li className="tl-item" key={job.role + job.org} variants={fadeUp}>
+                <motion.li className="tl-item" key={job.role + job.org} {...item}>
                   <span className="tl-dot" aria-hidden="true" />
                   <span className="tl-period">{job.period}</span>
                   <h4>{job.role}</h4>
@@ -47,7 +55,7 @@ export default function Experience() {
             <h3 className="col-title">Education</h3>
             <Timeline>
               {education.map((ed) => (
-                <motion.li className="tl-item" key={ed.degree} variants={fadeUp}>
+                <motion.li className="tl-item" key={ed.degree} {...item}>
                   <span className="tl-dot" aria-hidden="true" />
                   <span className="tl-period">{ed.period}</span>
                   <h4>{ed.degree}</h4>

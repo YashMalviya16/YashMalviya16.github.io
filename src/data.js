@@ -13,6 +13,11 @@ export const profile = {
   // While empty, the contact form opens the visitor's email app instead of sending directly.
   web3formsKey: '',
   portrait: '/images/portrait.webp',
+  // Optional background video for the hero (e.g. '/videos/hero.mp4' in public/videos).
+  // Keep it short, muted-friendly and under ~4 MB. When empty, the animated network canvas is used.
+  heroVideo: '',
+  // Words that rotate in the hero headline.
+  focus: ['machine learning', 'generative AI', 'healthcare data', 'business intelligence'],
   links: {
     linkedin: 'https://www.linkedin.com/in/yash-malviya-3a9a4b192/',
     github: 'https://github.com/YashMalviya16',
@@ -20,6 +25,7 @@ export const profile = {
 };
 
 export const about = {
+  statement: 'I turn messy real-world data into models people can trust, from synthetic patient records generated with GANs to dashboards that executive boards act on.',
   bio: [
     'I am a data scientist working across machine learning, deep learning and business intelligence. I hold an MS in Data Science from Worcester Polytechnic Institute and a B.Tech in Computer Science and Engineering.',
     'As an AI Research Assistant at WPI I worked on confidential industry research, building generative models that produce realistic synthetic healthcare records. Before that I spent two years at TCS applying machine learning to retail operations for Landmark Group.',

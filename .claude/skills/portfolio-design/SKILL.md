@@ -31,6 +31,14 @@ interactive things (links, buttons, focus rings, active nav) and small highlight
 - Stagger children by 0.08s. Hover: lift 4px, 0.2s.
 - Never animate layout-shifting properties on scroll; transform and opacity only.
 - The app is wrapped in `<MotionConfig reducedMotion="user">` — keep it that way.
+- Toolkit (reuse, don't reinvent): `SplitHeading` (masked word reveal for section titles), `Reveal` (fade-up),
+  `ScrollText` (words light up with scroll), `Counter`, `Magnetic` (primary CTAs and icon links),
+  `Marquee`, `data-cursor="Label"` on anything that should show a labelled cursor.
+- Smooth scroll is Lenis (`src/lib/smoothScroll.js`); lock it with `lockScroll(true)` for overlays and put
+  `data-lenis-prevent` on scrollable overlays.
+- Desktop-only effects (custom cursor, pinned horizontal gallery, smooth scroll) must be gated on
+  `(pointer: fine)` and fall back to plain layouts on touch and reduced motion.
+- Canvas/video backgrounds pause when off-screen and when the tab is hidden.
 
 ## Quality bar
 - Must look right at 360px wide. Test mobile first.

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { profile } from '../data.js';
 import { GitHub, LinkedIn, Mail, Phone, Pin } from './Icons.jsx';
-import Reveal from './Reveal.jsx';
+import Magnetic from './Magnetic.jsx';
+import Reveal, { SplitHeading } from './Reveal.jsx';
 
 export default function Contact() {
   const [status, setStatus] = useState({ state: 'idle', msg: '' });
@@ -47,10 +48,19 @@ export default function Contact() {
 
   return (
     <section id="contact" className="alt">
+      <div className="container">
+        <Reveal as="span" className="eyebrow">Contact</Reveal>
+        <SplitHeading as="h2" className="mega" text="Let's talk." />
+        <Reveal className="mega-cta" delay={0.2}>
+          <Magnetic strength={0.25}>
+            <a className="btn btn-primary btn-xl" href={`mailto:${profile.email}`} data-cursor="Email">
+              <Mail /> {profile.email}
+            </a>
+          </Magnetic>
+        </Reveal>
+      </div>
       <div className="container contact-grid">
         <Reveal>
-          <span className="eyebrow">Contact</span>
-          <h2>Let's work together.</h2>
           <p className="lead">I'm open to data science and machine learning roles, research collaborations and project work. The fastest way to reach me is email or LinkedIn.</p>
 
           <ul className="contact-list">
