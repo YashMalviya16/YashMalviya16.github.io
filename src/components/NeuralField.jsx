@@ -3,15 +3,17 @@ import { useEffect, useRef } from 'react';
 // Animated "neural network" canvas used as the hero background: drifting nodes, links between
 // nearby nodes, signal pulses travelling along links, and a cursor that gently pulls nodes in.
 // Pauses when off-screen or the tab is hidden; draws a single still frame for reduced-motion users.
-export default function NeuralField() {
+// `color` (hex) overrides the --accent colour; `strength` scales line/glow opacity.
+export default function NeuralField({ color, strength = 1, className = 'neural-field' }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const canvas = ref.current;
     const ctx = canvas.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#5eead4';
+    const accent = color || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#5eead4';
     const rgb = hexToRgb(accent);
+    const k = strength;
 
     let w = 0, h = 0, dpr = 1, nodes = [], pulses = [], raf = 0, visible = true, t = 0;
     const mouse = { x: -9999, y: -9999, active: false };
@@ -72,7 +74,7 @@ export default function NeuralField() {
           const d2 = dx * dx + dy * dy;
           if (d2 > LINK * LINK) continue;
           const alpha = (1 - Math.sqrt(d2) / LINK) * 0.35;
-          ctx.strokeStyle = `rgba(${rgb},${alpha})`;
+          ctx.strokeStyle = `rgba(${rgb},${Math.min(1, alpha * k)})`;
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
       }
@@ -81,14 +83,14 @@ export default function NeuralField() {
         for (const n of nodes) {
           const d = Math.hypot(mouse.x - n.x, mouse.y - n.y);
           if (d > 200) continue;
-          ctx.strokeStyle = `rgba(${rgb},${(1 - d / 200) * 0.5})`;
+          ctx.strokeStyle = `rgba(${rgb},${Math.min(1, (1 - d / 200) * 0.5 * k)})`;
           ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(n.x, n.y); ctx.stroke();
         }
       }
 
       for (const n of nodes) {
         const glow = 0.55 + Math.sin(t * 0.03 + n.phase) * 0.35;
-        ctx.fillStyle = `rgba(${rgb},${glow})`;
+        ctx.fillStyle = `rgba(${rgb},${Math.min(1, glow * k)})`;
         ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
       }
 
@@ -131,9 +133,9 @@ export default function NeuralField() {
       document.removeEventListener('pointerleave', onLeave);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, []);
+  }, [color, strength]);
 
-  return <canvas ref={ref} className="neural-field" aria-hidden="true" />;
+  return <canvas ref={ref} className={className} aria-hidden="true" />;
 }
 
 function hexToRgb(hex) {

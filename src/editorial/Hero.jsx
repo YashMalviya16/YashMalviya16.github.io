@@ -3,6 +3,7 @@ import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'moti
 import { profile, projects } from '../data.js';
 import ProjectCover from '../components/ProjectCover.jsx';
 import Magnetic from '../components/Magnetic.jsx';
+import NeuralField from '../components/NeuralField.jsx';
 import { ArrowUpRight, ease } from './ui.jsx';
 
 // Letters rise out of a mask one by one; each word is its own unit so lines only break between words.
@@ -37,6 +38,7 @@ export default function Hero() {
   const featured = projects[0];
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const ghostY = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
+  const networkY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   const portraitY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
   const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
 
@@ -57,6 +59,12 @@ export default function Hero() {
       <motion.div className="ed-hero-ghost" style={{ y: ghostY }} aria-hidden="true"
         initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.6, ease }}>
         {profile.name.split(' ')[0]}
+      </motion.div>
+
+      {/* The neural network from the classic site, drawn in white over the orange. */}
+      <motion.div className="ed-hero-network" style={{ y: networkY }} aria-hidden="true"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 0.3 }}>
+        <NeuralField color="#ffffff" strength={1.6} className="ed-hero-network-canvas" />
       </motion.div>
 
       <motion.div className="ed-hero-portrait" style={{ y: portraitY, x: px }}
