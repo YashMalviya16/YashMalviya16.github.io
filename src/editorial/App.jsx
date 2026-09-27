@@ -1,23 +1,31 @@
-import { useEffect } from 'react';
-import { MotionConfig } from 'motion/react';
+import { useCallback, useEffect, useState } from 'react';
+import { AnimatePresence, MotionConfig } from 'motion/react';
 import { startSmoothScroll } from '../lib/smoothScroll.js';
 import Header from './Header.jsx';
 import Hero from './Hero.jsx';
+import Intro, { shouldPlayIntro, SoundToggle } from './Intro.jsx';
 import Work from './Work.jsx';
-import { Achievements, Contact, Experience, Footer, Intro, Orgs, Process, Toolkit } from './Sections.jsx';
+import { Achievements, Contact, Experience, Footer, Intro as About, Orgs, Process, Toolkit } from './Sections.jsx';
 import './editorial.css';
 
 export default function EditorialApp() {
+  const [intro, setIntro] = useState(shouldPlayIntro);
+  // The hero mounts at the moment of "arrival" so its entrance animation plays as the portal opens.
+  const [revealed, setRevealed] = useState(!intro);
+  const reveal = useCallback(() => setRevealed(true), []);
+  const done = useCallback(() => setIntro(false), []);
+
   useEffect(() => startSmoothScroll(), []);
 
   return (
     <MotionConfig reducedMotion="user">
+      <AnimatePresence>{intro && <Intro key="intro" onReveal={reveal} onDone={done} />}</AnimatePresence>
       <a className="skip-link" href="#main">Skip to content</a>
-      <Header />
+      {revealed && <Header />}
       <main id="main" className="ed">
-        <Hero />
+        {revealed ? <Hero /> : <section id="top" className="ed-hero" aria-hidden="true" />}
         <Orgs />
-        <Intro />
+        <About />
         <Experience />
         <Work />
         <Process />
@@ -26,6 +34,7 @@ export default function EditorialApp() {
         <Contact />
       </main>
       <Footer />
+      {!intro && <SoundToggle />}
     </MotionConfig>
   );
 }
