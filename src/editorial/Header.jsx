@@ -7,8 +7,8 @@ import { ease, Plus } from './ui.jsx';
 const links = [
   { href: '#top', label: 'Home' },
   { href: '#about', label: 'About' },
-  { href: '#work', label: 'Work' },
   { href: '#experience', label: 'Experience' },
+  { href: '#work', label: 'Work' },
   { href: '#contact', label: 'Contact' },
 ];
 

@@ -18,9 +18,9 @@ export default function EditorialApp() {
         <Hero />
         <Orgs />
         <Intro />
+        <Experience />
         <Work />
         <Process />
-        <Experience />
         <Achievements />
         <Toolkit />
         <Contact />

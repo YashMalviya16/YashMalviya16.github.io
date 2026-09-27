@@ -96,7 +96,27 @@ export function Process() {
   );
 }
 
-/* ---------- experience (service-style rows) ---------- */
+/* ---------- experience (service-style rows with organisation photos) ---------- */
+
+// Your photo of the organisation, drifting inside its frame as you scroll; an orange name tile until you add one.
+function OrgPhoto({ photo, short, alt }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
+
+  return (
+    <div className="ed-org-photo" ref={ref}>
+      {photo ? (
+        <motion.img src={photo} alt={alt} loading="lazy" style={{ y, scale: 1.18 }} />
+      ) : (
+        <div className="ed-org-tile" aria-hidden="true">
+          <span>{short}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Experience() {
   return (
     <section id="experience" className="ed-section">
@@ -116,11 +136,12 @@ export function Experience() {
               transition={{ duration: 0.8, ease }}>
               <span className="ed-row-num">{String(i + 1).padStart(3, '0')}</span>
               <div className="ed-row-main">
+                <span className="ed-row-period">{job.period}</span>
                 <h3 className={i === 0 ? 'is-accent' : undefined}>{job.role}</h3>
                 <p className="ed-row-org">{job.org}</p>
                 <ul className="ed-tags">{job.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
               </div>
-              <span className="ed-row-period">{job.period}</span>
+              <OrgPhoto photo={job.photo} short={job.short} alt={job.org} />
             </motion.li>
           ))}
           {education.map((ed, i) => (
@@ -129,10 +150,11 @@ export function Experience() {
               transition={{ duration: 0.8, ease }}>
               <span className="ed-row-num">{String(experience.length + i + 1).padStart(3, '0')}</span>
               <div className="ed-row-main">
+                <span className="ed-row-period">{ed.period}</span>
                 <h3>{ed.degree}</h3>
                 <p className="ed-row-org">{ed.school} · {ed.detail}</p>
               </div>
-              <span className="ed-row-period">{ed.period}</span>
+              <OrgPhoto photo={ed.photo} short={ed.short} alt={ed.school} />
             </motion.li>
           ))}
         </ol>
@@ -289,7 +311,7 @@ export function Footer() {
           <div className="ed-footer-cols">
             <div>
               <small>Navigation</small>
-              <a href="#top">Home</a><a href="#about">About</a><a href="#work">Work</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
+              <a href="#top">Home</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#work">Work</a><a href="#contact">Contact</a>
             </div>
             <div>
               <small>Elsewhere</small>

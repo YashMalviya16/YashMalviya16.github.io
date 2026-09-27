@@ -277,7 +277,18 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- experience rows ---------- */
 .ed-split-head { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; }
 .ed-rows { list-style: none; margin: 56px 0 0; padding: 0; border-top: 1px solid var(--ed-line); }
-.ed-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--ed-line); align-items: start; transition: background 0.3s; }
+.ed-row { display: grid; grid-template-columns: 80px 1fr clamp(220px, 26vw, 340px); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--ed-line); align-items: start; transition: background 0.3s; }
+.ed-org-photo { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: var(--ed-orange); }
+.ed-org-photo img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.5s; filter: grayscale(0.35); }
+.ed-row:hover .ed-org-photo img { filter: grayscale(0); }
+.ed-org-tile {
+  position: absolute; inset: 0; display: grid; place-items: center; color: #fff;
+  background-image: linear-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.12) 1px, transparent 1px);
+  background-size: 25% 33.34%; transition: background-color 0.4s;
+}
+.ed-org-tile span { font-family: var(--ed-display); font-weight: 800; letter-spacing: -0.05em; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; transition: transform 0.6s var(--ed-ease); }
+.ed-row:hover .ed-org-tile span { transform: scale(1.08); }
+.ed-row:nth-child(even) .ed-org-tile { background-color: var(--ed-dark); }
 .ed-row:hover { background: rgb(255 255 255 / 0.6); }
 .ed-row-num { font-family: var(--ed-display); font-weight: 700; color: var(--ed-soft); padding-top: 6px; }
 .ed-row h3 { font-family: var(--ed-display); font-weight: 700; text-transform: uppercase; letter-spacing: -0.035em; font-size: clamp(1.4rem, 3.2vw, 2.4rem); line-height: 1; }
@@ -285,11 +296,12 @@ h1, h2, h3, p { margin: 0; }
 .ed-row-org { color: var(--ed-muted); margin: 10px 0 18px; }
 .ed-row.is-edu .ed-row-org { margin-bottom: 0; }
 .ed-row .ed-tags li { max-width: 46ch; }
-.ed-row-period { font-size: 0.85rem; font-weight: 600; white-space: nowrap; padding-top: 8px; }
-@media (max-width: 700px) {
-  .ed-row { grid-template-columns: 1fr; gap: 10px; }
+.ed-row-period { display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ed-orange); margin-bottom: 10px; }
+@media (max-width: 860px) { .ed-row { grid-template-columns: 56px 1fr 180px; gap: 20px; } }
+@media (max-width: 640px) {
+  .ed-row { grid-template-columns: 1fr; gap: 14px; }
   .ed-row-num { padding: 0; }
-  .ed-row-period { order: -1; padding: 0; color: var(--ed-orange); }
+  .ed-org-photo { order: -1; aspect-ratio: 16 / 9; }
 }
 
 /* ---------- achievements (dark) ---------- */

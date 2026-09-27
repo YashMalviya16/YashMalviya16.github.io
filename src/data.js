@@ -48,10 +48,14 @@ export const about = {
   ],
 };
 
+// photo: your own photo of the organisation (office, campus, team, event), e.g. '/images/orgs/eotss.webp'.
+// While null, the editorial site shows an orange tile with `short` instead.
 export const experience = [
   {
     role: 'Data & AI Product Analyst',
     org: 'Commonwealth of Massachusetts · EOTSS',
+    short: 'EOTSS',
+    photo: null,
     period: 'Aug 2025 – Present',
     points: [
       'Advanced Analytics pod: taking AI from idea to production on regulated, audited government data.',
@@ -62,6 +66,8 @@ export const experience = [
   {
     role: 'Research Assistant',
     org: 'Worcester Polytechnic Institute',
+    short: 'WPI',
+    photo: null,
     period: 'Dec 2023 – May 2025',
     points: [
       'First-author published research on privacy-preserving synthetic data using GANs and diffusion models.',
@@ -70,6 +76,8 @@ export const experience = [
   {
     role: 'ML Researcher',
     org: 'Availity Clinical Solutions',
+    short: 'Availity',
+    photo: null,
     period: 'Dec 2023 – Jan 2025',
     points: [
       'Built machine learning for healthcare under HIPAA.',
@@ -79,6 +87,8 @@ export const experience = [
   {
     role: 'Data Scientist',
     org: 'Tata Consultancy Services',
+    short: 'TCS',
+    photo: null,
     period: 'Jun 2021 – Aug 2023',
     points: [
       'Forecast demand for a large retail client (Landmark Group).',
@@ -91,12 +101,16 @@ export const education = [
   {
     degree: 'M.S. in Data Science',
     school: 'Worcester Polytechnic Institute (WPI)',
+    short: 'WPI',
+    photo: null,
     period: 'Aug 2023 – May 2025',
     detail: 'GPA 4.0 / 4.0. First-author publication in privacy-preserving generative AI.',
   },
   {
     degree: 'B.Tech in Computer Science and Engineering',
     school: 'Rajiv Gandhi Proudyogiki Vishwavidyalaya',
+    short: 'RGPV',
+    photo: null,
     period: 'Aug 2017 – May 2021',
     detail: 'GPA 9.0 / 10.',
   },
