@@ -21,7 +21,8 @@ function onAnchorClick(e) {
 export function startSmoothScroll() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
-  if (reduce || coarse || lenis) return () => {};
+  const off = new URLSearchParams(location.search).has('nosmooth'); // for testing / screenshots
+  if (reduce || coarse || off || lenis) return () => {};
   lenis = new Lenis({ autoRaf: true, lerp: 0.1 });
   document.addEventListener('click', onAnchorClick);
   return () => {

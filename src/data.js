@@ -295,6 +295,34 @@ export const leadership = [
   { role: 'Designer', org: 'Creative side practice', detail: 'Icon systems, logo concepts and presentation design.', when: '' },
 ];
 
+// ---- Editorial version extras ----
+
+// Shown as a wordmark strip under the hero (plain text, not logos).
+export const organizations = [
+  'Commonwealth of Massachusetts',
+  'Worcester Polytechnic Institute',
+  'Availity',
+  'Tata Consultancy Services',
+  'Landmark Group',
+];
+
+// "How I work" cards. TODO: reword in your own voice.
+export const process = [
+  { title: 'Frame the decision', text: 'Start from the decision the data has to support, and the rules it has to respect.' },
+  { title: 'Build the foundation', text: 'Governed Snowflake pipelines, medallion layers and RBAC, so the data can be trusted.' },
+  { title: 'Model & automate', text: 'LLMs, agents, optimization or classic ML: whichever actually fits the problem.' },
+  { title: 'Ship & sustain', text: 'MLOps, documentation and stakeholder reviews, so it keeps running after launch.' },
+];
+
+export const achievements = [
+  { title: 'First-author publication', meta: 'Privacy-preserving synthetic EHR', kind: 'Research', year: '' },
+  { title: 'Judge, Hack for Human Impact', meta: 'WPI × Commonwealth of MA', kind: 'Hackathon', year: '2025' },
+  { title: 'Speaker', meta: 'Commonwealth of MA × WPI', kind: 'Talk', year: '2025' },
+  { title: 'Event Coordinator', meta: 'MIT Bitcoin Hackathon & Expo', kind: 'Community', year: '2025' },
+  { title: 'Co-Convenor, Student Programs', meta: 'Legacy 250 Initiative', kind: 'Leadership', year: '' },
+  { title: '4.0 GPA', meta: 'M.S. Data Science, WPI', kind: 'Academic', year: '2025' },
+];
+
 export const nav = [
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },

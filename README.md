@@ -12,6 +12,15 @@ npm run dev        # preview at http://localhost:5173
 npm run build      # production build in dist/
 ```
 
+## Two designs (branch `editorial`)
+
+This branch contains two versions of the site that share the same content:
+
+- `/` : **editorial**: light, bold, burnt orange (in `src/editorial/`)
+- `/?v=classic` : **classic**: dark with the neural-network hero (in `src/components/`)
+
+To ship just one, make `src/main.jsx` import only that version's `App`.
+
 ## Update content
 
 All text, links, jobs and projects live in [`src/data.js`](src/data.js). Edit that file; the components read from it.
