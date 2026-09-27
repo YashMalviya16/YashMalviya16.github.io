@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
-import { profile, projects } from '../data.js';
-import ProjectCover from '../components/ProjectCover.jsx';
+import { experience, profile } from '../data.js';
 import Magnetic from '../components/Magnetic.jsx';
 import NeuralField from '../components/NeuralField.jsx';
 import { ArrowUpRight, ease } from './ui.jsx';
@@ -35,7 +34,7 @@ function BigName({ text, delay }) {
 
 export default function Hero() {
   const ref = useRef(null);
-  const featured = projects[0];
+  const current = experience[0]; // current role, shown on the floating photo card
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const ghostY = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
   const networkY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
@@ -87,16 +86,17 @@ export default function Hero() {
         </motion.div>
 
         <motion.a
-          href="#work"
+          href="#experience"
           className="ed-float-card"
+          aria-label={`Currently at ${current.org}. See experience`}
           style={{ x: cardX }}
           initial={{ opacity: 0, y: 40, rotate: 6 }}
           animate={{ opacity: 1, y: 0, rotate: 2 }}
           transition={{ duration: 1.1, ease, delay: 0.8 }}
           whileHover={{ rotate: 0, scale: 1.03 }}
         >
-          <div className="ed-float-media"><ProjectCover art={featured.art} seed={`hero-${featured.id}`} /></div>
-          <div className="ed-float-label"><span><i /> {featured.title.split(' ').slice(0, 2).join(' ')}</span><span>/AI</span></div>
+          <div className="ed-float-media"><img src={current.photo} alt="" width="1200" height="900" /></div>
+          <div className="ed-float-label"><span><i /> Commonwealth of MA</span><span>/{current.short}</span></div>
         </motion.a>
 
         <motion.div className="ed-talk"

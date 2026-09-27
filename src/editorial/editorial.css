@@ -145,6 +145,7 @@ h1, h2, h3, p { margin: 0; }
   box-shadow: 0 24px 50px -12px rgb(0 0 0 / 0.35); animation: ed-bob 6s ease-in-out infinite;
 }
 .ed-float-media { aspect-ratio: 1; overflow: hidden; background: var(--ed-orange); }
+.ed-float-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
 .ed-float-media .project-cover { --surface-2: var(--ed-orange); --accent: #fff; --border: rgb(255 255 255 / 0.18); --muted: rgb(255 255 255 / 0.6); --text: var(--ed-orange); }
 .ed-float-label { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 600; margin-top: 8px; padding: 6px 4px 2px; background: #f1f1ee; }
 .ed-float-label i { display: inline-block; width: 6px; height: 6px; background: var(--ed-orange); border-radius: 99px; margin-right: 4px; vertical-align: 1px; }
