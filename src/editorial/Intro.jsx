@@ -215,6 +215,7 @@ export function SoundToggle() {
     if (!ambient.isStarted()) {
       ambient.setMuted(false);
       ambient.start();
+      ambient.groove();
       return;
     }
     ambient.setMuted(!muted);
