@@ -1,5 +1,5 @@
 // Compresses your organisation photos for the Experience section.
-// 1. Put photos in photos/orgs/ named after the organisation: eotss.jpg, wpi.jpg, availity.jpg, tcs.jpg, rgpv.jpg
+// 1. Put photos in photos/orgs/ named after the organisation: eotss.jpg, wpi.jpg, availity.jpg, tcs.jpg
 // 2. Run: npm run photos
 // 3. Set photo: '/images/orgs/<name>.webp' for that entry in src/data.js
 import sharp from 'sharp';
