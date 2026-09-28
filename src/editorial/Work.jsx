@@ -3,14 +3,12 @@ import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react';
 import { archive, projects } from '../data.js';
 import { lockScroll } from '../lib/smoothScroll.js';
 import useMediaQuery from '../lib/useMediaQuery.js';
-import ProjectCover from '../components/ProjectCover.jsx';
 import GenCover from './GenCover.jsx';
 import { ArrowUpRight, BlurHeading, ease, Pill, Plus } from './ui.jsx';
 
 function Media({ p, where = 'card' }) {
   if (p.image) return <img src={p.image} alt="" width="960" height="720" loading="lazy" decoding="async" />;
-  if (p.gen) return <GenCover type={p.gen} seed={`${where}-${p.id}`} />;
-  return <ProjectCover art={p.art} seed={p.id} />;
+  return <GenCover type={p.gen} seed={`${where}-${p.id}`} />;
 }
 
 export function ProjectModal({ project, onClose }) {

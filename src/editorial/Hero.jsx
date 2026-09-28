@@ -121,7 +121,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease, delay: 1.1 }}>
           <span className="ed-talk-label">Let's talk</span>
           <div className="ed-talk-row">
-            <img src="/images/portrait.webp" alt="" width="48" height="48" />
+            <img src={profile.portrait} alt="" width="48" height="48" />
             <div><strong>{profile.name.split(' ')[0]}</strong><small>{profile.role}</small></div>
             <Magnetic strength={0.4}>
               <a href="#contact" className="ed-talk-btn" aria-label="Go to contact"><ArrowUpRight /></a>

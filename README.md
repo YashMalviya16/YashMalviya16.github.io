@@ -2,36 +2,26 @@
 
 Personal portfolio of Yash Malviya, live at https://yashmalviya16.github.io.
 
-Built with React + Vite, animated with [Motion](https://motion.dev), deployed to GitHub Pages by GitHub Actions on every push to `main`.
+React + Vite, animated with [Motion](https://motion.dev) and Lenis smooth scrolling, deployed to GitHub Pages by GitHub Actions on every push to `main`.
 
 ## Work on it
 
 ```bash
 npm install
-npm run dev        # preview at http://localhost:5173
-npm run build      # production build in dist/
+npm run dev        # preview at http://localhost:5173  (add ?nointro to skip the intro)
+npm run check      # the same checks + build that run on GitHub before deploying
 ```
-
-## Two designs (branch `editorial`)
-
-This branch contains two versions of the site that share the same content:
-
-- `/` : **editorial**: light, bold, burnt orange (in `src/editorial/`)
-- `/?v=classic` : **classic**: dark with the neural-network hero (in `src/components/`)
-
-To ship just one, make `src/main.jsx` import only that version's `App`.
 
 ## Update content
 
-All text, links, jobs and projects live in [`src/data.js`](src/data.js). Edit that file; the components read from it.
+All text, links, jobs, projects, KPIs, press and highlights live in [`src/data.js`](src/data.js). Edit that file; the page reads from it.
 
-To add a project image, put the original in `legacy/images/`, add a line to `scripts/optimize-images.mjs`, and run `npm run images`. It writes a compressed WebP to `public/images/`.
-
-## Hero background video
-
-The hero uses an animated neural-network canvas by default. To use a video instead, put a short, silent,
-looping clip (MP4, under about 4 MB, 1920×1080 or smaller) in `public/videos/` and set
-`heroVideo: '/videos/your-clip.mp4'` in `src/data.js`.
+| To change | Where |
+|---|---|
+| Photos of organisations (Experience) | put files in `photos/orgs/`, run `npm run photos`, set `photo:` in `experience` |
+| Proof photos (Honors & community) | put files in `photos/highlights/`, run `npm run photos`, set `photo:` in `achievements` |
+| Link-preview image (LinkedIn, WhatsApp…) | `node scripts/og-card.mjs` rebuilds `public/images/og-card.jpg` |
+| Résumé | replace `public/Yash-Malviya-Resume.pdf` |
 
 ## Contact form
 
@@ -42,7 +32,9 @@ The form opens the visitor's email app by default. To have it send directly, get
 | Path | What |
 |---|---|
 | `src/data.js` | All site content |
-| `src/components/` | One file per section |
-| `src/styles.css` | Design tokens and styles |
+| `src/editorial/` | The site: one file per area (Hero, Intro, Work, Sections, ProcessVideo, GenCover…) |
+| `src/components/` | Shared pieces: neural-network canvas, magnetic buttons |
+| `src/lib/` | Smooth scroll, generated music, contact form |
+| `scripts/` | Image processing, link-preview card, pre-deploy checks |
 | `.claude/skills/portfolio-design/` | Design rules Claude Code follows when editing the site |
-| `legacy/` | The previous template-based site, kept for reference (not deployed) |
+| `legacy/` | The previous template site and source images (not deployed) |

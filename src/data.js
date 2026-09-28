@@ -5,7 +5,6 @@ export const profile = {
   role: 'Data & AI Product Analyst',
   org: 'Commonwealth of Massachusetts (EOTSS)',
   orgShort: 'Mass. EOTSS',
-  tagline: 'I build production AI systems on real government data: LLM pipelines, agentic workflows, and the MLOps that keeps them running.',
   location: 'Boston, MA',
   email: 'ymalviya@wpi.edu', // TODO: switch to a personal email if the WPI address is no longer active
   phone: '(774) 232-5158',
@@ -14,15 +13,10 @@ export const profile = {
   // Free key from https://web3forms.com (enter the email that should receive messages).
   // While empty, the contact form opens the visitor's email app instead of sending directly.
   web3formsKey: '',
+  // Small avatar in the hero "Let's talk" card.
   portrait: '/images/portrait.webp',
-  // Photo in the editorial About section (the second photo, after the hero cut-out).
+  // Photo in the About section (the second photo, after the hero cut-out).
   aboutPhoto: '/images/portrait-about.webp',
-  // Optional background video for the hero (e.g. '/videos/hero.mp4' in public/videos).
-  // Keep it short, muted-friendly and under ~4 MB. When empty, the animated network canvas is used.
-  heroVideo: '',
-  // Words that rotate in the hero headline.
-  focus: ['LLM pipelines', 'agentic workflows', 'MLOps', 'geospatial analytics', 'synthetic data'],
-  status: 'Currently at Mass. EOTSS',
   links: {
     linkedin: 'https://www.linkedin.com/in/yash-malviya-3a9a4b192/',
     github: 'https://github.com/YashMalviya16',
@@ -34,11 +28,6 @@ export const about = {
   bio: [
     "I'm a Data & AI Product Analyst on the Advanced Analytics pod at Massachusetts EOTSS. My work spans Snowflake-based data infrastructure, geospatial analytics, applied LLM and agentic systems, and operations-research optimization for public-sector decisions.",
     'Before this I researched privacy-preserving synthetic data as a first author, built ML for healthcare under HIPAA, and forecast demand for a retail giant. I hold an M.S. in Data Science from Worcester Polytechnic Institute.',
-  ],
-  stats: [
-    { value: '5+', label: 'years in data and AI' },
-    { value: '2M+', label: 'synthetic health records generated' },
-    { value: '4.0', label: 'GPA, M.S. Data Science (WPI)' },
   ],
   skills: [
     { group: 'Applied & agentic AI', items: ['LLMs', 'RAG', 'Agentic workflows', 'Semantic Kernel', 'Snowflake Cortex', 'NLP', 'Embeddings', 'GANs', 'Diffusion models'] },
@@ -112,7 +101,7 @@ export const education = [
 ];
 
 // category: 'ai' (Agentic & LLM), 'data' (Data & geospatial), 'research'
-// art: cover for the classic site (components/ProjectCover.jsx); gen: cover for the editorial site (editorial/GenCover.jsx)
+// gen: which generated cover to draw (editorial/GenCover.jsx); image: use a picture instead
 // Government work is named by its tech stack, not its internal project name.
 export const projects = [
   {
@@ -120,7 +109,6 @@ export const projects = [
     title: 'LLM Data Agent on Snowflake Cortex',
     kicker: 'Agentic AI · Claude Sonnet · Snowflake Cortex',
     category: 'ai',
-    art: 'agent',
     gen: 'agent',
     summary: 'A conversational AI agent that queries and reasons over large public demographic datasets in plain English.',
     details: [
@@ -137,7 +125,6 @@ export const projects = [
     title: 'Geospatial Optimization Engine (LP + MILP)',
     kicker: 'Operations research · Snowflake · Tableau',
     category: 'data',
-    art: 'map',
     gen: 'isomap',
     summary: 'A statewide service-location dataset with optimization models that allocate capacity and funding across towns.',
     details: [
@@ -154,7 +141,6 @@ export const projects = [
     title: 'NLP Incident Intelligence Pipeline',
     kicker: 'Snowflake Cortex · Embeddings · Clustering',
     category: 'ai',
-    art: 'clusters',
     gen: 'pipeline',
     summary: 'LLM and NLP pipelines over IT service-desk tickets that surface systemic cost patterns invisible in standard reporting.',
     details: [
@@ -170,7 +156,6 @@ export const projects = [
     title: 'Document AI for Data Governance',
     kicker: 'PDF extraction · NLP · Streamlit',
     category: 'ai',
-    art: 'document',
     gen: 'document',
     summary: 'An app that reads data-sharing agreements, extracts their key terms automatically, scores risk and maps relationships.',
     details: [
@@ -186,7 +171,6 @@ export const projects = [
     title: 'Interactive Geospatial Dashboards',
     kicker: 'Streamlit · Plotly · Snowflake',
     category: 'data',
-    art: 'pins',
     gen: 'dashboard',
     summary: 'Click-to-filter map apps that combine demographic and staffing data for fast, visual exploration.',
     details: [
@@ -218,7 +202,6 @@ export const projects = [
     title: 'Agentic AI Job Applier',
     kicker: 'Independent · Agentic AI',
     category: 'ai',
-    art: 'loop',
     gen: 'loop',
     summary: 'An autonomous job-application agent that perceives, decides and acts, with privacy-first, GDPR-conscious logging.',
     details: [
@@ -303,14 +286,6 @@ export const archive = [
   },
 ];
 
-export const leadership = [
-  { role: 'Co-Convenor, Student Programs', org: 'Legacy 250 Initiative', detail: 'Nationwide educational campaign commemorating 250 years of American independence and India–US shared history.', when: '' },
-  { role: 'Judge', org: 'Hack for Human Impact (WPI × Commonwealth of MA)', detail: '', when: 'Aug 2025' },
-  { role: 'Event Coordinator', org: 'MIT Bitcoin Hackathon & Expo', detail: '', when: 'Apr 2025' },
-  { role: 'Speaker', org: 'Commonwealth of MA × WPI', detail: '', when: 'Mar 2025' },
-  { role: 'Designer', org: 'Creative side practice', detail: 'Icon systems, logo concepts and presentation design.', when: '' },
-];
-
 // ---- Editorial version extras ----
 
 // "Impact in numbers". Figures come from your résumé and project write-ups; keep them accurate.
@@ -387,10 +362,3 @@ export const achievements = [
   { title: '4.0 GPA', meta: 'M.S. Data Science, WPI', kind: 'Academic', year: '2025' },
 ];
 
-export const nav = [
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'beyond', label: 'Beyond' },
-  { id: 'contact', label: 'Contact' },
-];

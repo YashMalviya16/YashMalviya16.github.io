@@ -1,47 +1,38 @@
 ---
 name: portfolio-design
-description: Design system for Yash Malviya's portfolio (React + Vite + Motion). Use whenever adding or changing a section, component, colour, font or animation on this site.
+description: Design system for Yash Malviya's orange editorial portfolio (React + Vite + Motion). Use whenever adding or changing a section, component, colour, font, image or animation on this site.
 ---
 
 # Portfolio design system
 
-Stack: React + Vite, animation with Motion (`import { motion } from "motion/react"`). All content lives in
-`src/data.js` — components never hard-code copy.
+Stack: React + Vite, animation with Motion (`import { motion } from "motion/react"`), Lenis smooth scroll.
+All content lives in `src/data.js`; components never hard-code copy. The site lives in `src/editorial/`.
 
-## Colour
-Use only the CSS custom properties in `src/styles.css` (`--bg`, `--surface`, `--surface-2`, `--border`,
-`--text`, `--muted`, `--accent`, `--accent-ink`). Never write a raw hex value in a component. Dark is the
-default theme; light is defined under `prefers-color-scheme: light`. One accent colour only; it marks
-interactive things (links, buttons, focus rings, active nav) and small highlights, never large fills.
+## Look
+- Light editorial base (`--ed-bg` #f3f3f1, ink #0f0f0f) with **burnt orange `--ed-orange` #e4572e** as the only accent.
+- Dark sections (`.ed-dark`) for contrast: Honors & community, process cards, menu, intro.
+- Signature element: the white **neural network** canvas (`components/NeuralField.jsx`) over the orange hero. Keep it.
+- Use only the `--ed-*` tokens in `src/editorial/editorial.css`; no new colours without a reason.
 
 ## Type
-- Display: Space Grotesk 600 — headings only.
-- Body: Inter 400/500.
-- Scale (fluid): h1 `clamp(2.5rem, 6vw, 4.5rem)`, h2 `clamp(1.75rem, 3.5vw, 2.5rem)`, h3 1.25rem, body 1rem/1.65, small 0.875rem.
-- Line length for prose: max 65ch.
+- Display: Inter Tight 700–800, UPPERCASE, tight tracking (-0.045em) for headings.
+- Headings are two-tone via `BlurHeading` (`"Strong words|soft grey words"`) and blur into focus on scroll.
+- Body: Inter 400/500. Small labels: `Pill` (orange dot, uppercase, 0.72rem).
 
-## Spacing & layout
-- 4px base; use the `--space-*` tokens.
-- Content width 1120px, side gutter 24px (16px under 480px).
-- Sections: `padding-block: clamp(4rem, 10vw, 7rem)`; each starts with an eyebrow label + h2.
-- Radius: 16px cards, 999px pills/buttons.
+## Components to reuse (src/editorial/ui.jsx and friends)
+`BlurHeading`, `Pill`, `FadeUp`, `ArrowUpRight`, `Plus`, `glyphs`, `GenCover` (Gen-AI style project art),
+`Magnetic` (CTAs), `ProjectModal` / `Lightbox` (overlays), `lockScroll()` for anything modal.
 
 ## Motion
-- Entrances: fade + 24px rise, 0.6s, ease `[0.22, 1, 0.36, 1]`, triggered once on scroll (`whileInView`, `viewport={{ once: true, margin: "-80px" }}`).
-- Stagger children by 0.08s. Hover: lift 4px, 0.2s.
-- Never animate layout-shifting properties on scroll; transform and opacity only.
-- The app is wrapped in `<MotionConfig reducedMotion="user">` — keep it that way.
-- Toolkit (reuse, don't reinvent): `SplitHeading` (masked word reveal for section titles), `Reveal` (fade-up),
-  `ScrollText` (words light up with scroll), `Counter`, `Magnetic` (primary CTAs and icon links),
-  `Marquee`, `data-cursor="Label"` on anything that should show a labelled cursor.
-- Smooth scroll is Lenis (`src/lib/smoothScroll.js`); lock it with `lockScroll(true)` for overlays and put
-  `data-lenis-prevent` on scrollable overlays.
-- Desktop-only effects (custom cursor, pinned horizontal gallery, smooth scroll) must be gated on
-  `(pointer: fine)` and fall back to plain layouts on touch and reduced motion.
-- Canvas/video backgrounds pause when off-screen and when the tab is hidden.
+- Entrances: fade/blur + rise, ease `[0.22, 1, 0.36, 1]`, once, on scroll.
+- Transform and opacity only. Wrap is `<MotionConfig reducedMotion="user">`; every CSS animation needs a
+  `prefers-reduced-motion` off switch; heavy/looping effects pause off-screen or until hover.
+
+## Content rules
+- Government work is named by tech stack, never by internal project name.
+- Numbers (KPIs) must come from the résumé or the user; don't invent metrics, testimonials or prices.
 
 ## Quality bar
-- Must look right at 360px wide. Test mobile first.
-- Every image: WebP in `public/images`, ≤ 250 KB, explicit width/height, meaningful `alt`.
-- Every interactive element reachable by keyboard with a visible focus ring.
-- No lorem ipsum, no template credits, no dead links.
+- Must work at 375px wide with no horizontal scroll.
+- Images: WebP via `npm run photos`, meaningful `alt`, explicit width/height where possible.
+- Run `npm run check` before pushing (case-sensitive paths for GitHub's Linux runners).
