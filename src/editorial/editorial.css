@@ -576,3 +576,51 @@ h1, h2, h3, p { margin: 0; }
 @keyframes ed-eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
 .ed-sound.is-muted .ed-sound-bars i { animation: none; transform: scaleY(0.25); background: var(--ed-soft); }
 @media (prefers-reduced-motion: reduce) { .ed-intro-ring, .ed-sound-bars i { animation: none; } }
+
+/* ---------- Gen-AI style project covers ---------- */
+.gc { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--gc-bg); isolation: isolate; }
+.gc svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.gc-blob { position: absolute; width: 75%; aspect-ratio: 1; border-radius: 50%; z-index: -1; opacity: 0.85; will-change: transform; }
+.gc-blob.b1 { left: -20%; top: -30%; background: radial-gradient(closest-side, var(--gc-1), transparent); animation: gc-drift 14s ease-in-out infinite; }
+.gc-blob.b2 { right: -25%; top: 10%; background: radial-gradient(closest-side, var(--gc-2), transparent); animation: gc-drift 18s ease-in-out infinite reverse; }
+.gc-blob.b3 { left: 20%; bottom: -45%; background: radial-gradient(closest-side, var(--gc-3), transparent); animation: gc-drift 16s ease-in-out infinite; }
+.gc-grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.16; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.gc::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgb(0 0 0 / 0.45)); }
+.gc-label { fill: #fff; font-family: var(--ed-display); font-weight: 700; letter-spacing: 0.06em; }
+
+.gc-agent { --gc-bg: #0e0718; --gc-1: #ff5a1f; --gc-2: #d4145a; --gc-3: #5b3cff; }
+.gc-isomap { --gc-bg: #041419; --gc-1: #0d9488; --gc-2: #ff6a3d; --gc-3: #1d4ed8; }
+.gc-pipeline { --gc-bg: #0b0718; --gc-1: #7c3aed; --gc-2: #0891b2; --gc-3: #ff6a3d; }
+.gc-document { --gc-bg: #140905; --gc-1: #ea580c; --gc-2: #be185d; --gc-3: #f59e0b; }
+.gc-dashboard { --gc-bg: #050d1f; --gc-1: #1d4ed8; --gc-2: #0d9488; --gc-3: #ff6a3d; }
+.gc-loop { --gc-bg: #10061a; --gc-1: #db2777; --gc-2: #ff6a3d; --gc-3: #0891b2; }
+
+.gc-spin { transform-box: fill-box; transform-origin: center; animation: gc-rot 16s linear infinite; }
+.gc-dash { animation: gc-dashmove 3s linear infinite; }
+.gc-flow { animation: gc-dashmove 1.6s linear infinite; }
+.gc-grow { transform-box: fill-box; transform-origin: bottom; animation: gc-grow 3.2s var(--ed-ease) infinite; }
+.gc-blink { animation: gc-blink 1.2s ease-in-out infinite; }
+.gc-ping { transform-box: fill-box; transform-origin: center; animation: gc-ping 2.4s ease-out infinite; }
+.gc-scan { animation: gc-scan 3.4s ease-in-out infinite; }
+.gc-float { animation: gc-float 4s ease-in-out infinite; }
+.gc-donut { animation: gc-donut 3.2s var(--ed-ease) infinite; }
+
+@keyframes gc-drift { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(8%, 6%) scale(1.08); } }
+@keyframes gc-rot { to { transform: rotate(360deg); } }
+@keyframes gc-dashmove { to { stroke-dashoffset: -40; } }
+@keyframes gc-grow { 0% { transform: scaleY(0.15); } 35%, 85% { transform: scaleY(1); } 100% { transform: scaleY(0.15); } }
+@keyframes gc-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+@keyframes gc-ping { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes gc-scan { 0% { transform: translateY(0); } 100% { transform: translateY(300px); } }
+@keyframes gc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes gc-donut { 0% { stroke-dasharray: 0 201; } 40%, 85% { stroke-dasharray: 140 201; } 100% { stroke-dasharray: 0 201; } }
+
+/* calm until hovered on desktop; always gently alive on touch */
+@media (pointer: fine) {
+  .ed-card .gc *, .ed-card .gc { animation-play-state: paused; }
+  .ed-card:hover .gc *, .ed-card:hover .gc, .ed-modal .gc, .ed-modal .gc * { animation-play-state: running; }
+}
+@media (prefers-reduced-motion: reduce) { .gc, .gc * { animation: none !important; } }
