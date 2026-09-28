@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
-import { experience, profile } from '../data.js';
+import { experience, press, profile } from '../data.js';
 import Magnetic from '../components/Magnetic.jsx';
 import NeuralField from '../components/NeuralField.jsx';
 import { ArrowUpRight, ease } from './ui.jsx';
@@ -72,10 +72,28 @@ export default function Hero() {
       </motion.div>
 
       <div className="ed-wrap ed-hero-content">
+        <div className="ed-hero-lead">
         <motion.p className="ed-hero-intro"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease, delay: 0.5 }}>
           I build production AI systems on real government data that are reliable, audited and useful.
         </motion.p>
+
+        {press[0] && (
+          <motion.a
+            className="ed-hero-press"
+            href={press[0].url}
+            target="_blank"
+            rel="noopener"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease, delay: 0.7 }}
+          >
+            <span className="ed-hero-press-dot" aria-hidden="true" />
+            Featured in <strong>{press[0].outlet}</strong>
+            <ArrowUpRight />
+          </motion.a>
+        )}
+        </div>
 
         <motion.div className="ed-hero-name" style={{ y: nameY }}>
           <motion.span className="ed-hero-kicker"

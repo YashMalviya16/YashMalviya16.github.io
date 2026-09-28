@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useInView, useScroll, useTransform } from 'motion/react';
-import { about, achievements, experience, education, kpis, organizations, process, profile } from '../data.js';
+import { about, achievements, experience, education, kpis, organizations, press, process, profile } from '../data.js';
 import { submitContact } from '../lib/contact.js';
 import { lockScroll } from '../lib/smoothScroll.js';
 import { ArrowUpRight, BlurHeading, ease, FadeUp, glyphs, Pill, Plus } from './ui.jsx';
@@ -248,16 +248,50 @@ function Lightbox({ item, onClose }) {
   );
 }
 
+// "As featured in" card for press coverage.
+function PressFeature({ item }) {
+  return (
+    <motion.a
+      href={item.url}
+      target="_blank"
+      rel="noopener"
+      className="ed-press"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease }}
+    >
+      <div className="ed-press-media">
+        <img src={item.image} alt="" loading="lazy" />
+        <span className="ed-press-badge">Featured in<strong>{item.outlet}</strong></span>
+      </div>
+      <div className="ed-press-body">
+        <span className="ed-press-meta">{item.outlet} · {item.date}</span>
+        <h3>{item.title}</h3>
+        <p className="ed-press-summary">{item.summary}</p>
+        {item.quote && (
+          <blockquote>
+            <p>“{item.quote.text}”</p>
+            <cite>{item.quote.by}</cite>
+          </blockquote>
+        )}
+        <span className="ed-press-cta">Read the article <ArrowUpRight /></span>
+      </div>
+    </motion.a>
+  );
+}
+
 export function Achievements() {
   const [open, setOpen] = useState(null);
   const close = useCallback(() => setOpen(null), []);
   return (
-    <section className="ed-section ed-dark">
+    <section id="highlights" className="ed-section ed-dark">
       <div className="ed-wrap">
         <div className="ed-ach-head">
           <Pill dark>Honors & community</Pill>
           <BlurHeading text={`${profile.name.split(' ')[0]}'s|highlights`} />
         </div>
+        {press.map((p) => <PressFeature key={p.url} item={p} />)}
         <div className="ed-ach-grid">
           {achievements.map((a, i) => (
             <motion.article key={a.title} className="ed-ach"

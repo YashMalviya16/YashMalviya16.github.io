@@ -58,6 +58,7 @@ export const experience = [
     photo: '/images/orgs/eotss.webp',
     period: 'Aug 2025 – Present',
     points: [
+      'Hired full-time after my WPI capstone on privacy-preserving synthetic data for EOTSS (featured in WPI News).',
       'Advanced Analytics pod: taking AI from idea to production on regulated, audited government data.',
       'Built Snowflake-based data infrastructure, geospatial analytics and operations-research optimization for public-sector decisions.',
       'Designed applied LLM and agentic systems on Snowflake Cortex, including a census data agent.',
@@ -336,6 +337,19 @@ export const process = [
   { title: 'Build the foundation', text: 'Governed Snowflake pipelines, medallion layers and RBAC, so the data can be trusted.' },
   { title: 'Model & automate', text: 'LLMs, agents, optimization or classic ML: whichever actually fits the problem.' },
   { title: 'Ship & sustain', text: 'MLOps, documentation and stakeholder reviews, so it keeps running after launch.' },
+];
+
+// Press coverage, shown as a featured card at the top of "Honors & community" and linked from the hero.
+export const press = [
+  {
+    outlet: 'WPI News',
+    date: 'August 5, 2025',
+    title: 'From Classroom to the Commonwealth: WPI Graduate Students Land Roles at Mass. Tech Agency After Project Success',
+    url: 'https://www.wpi.edu/news/announcements/classroom-commonwealth-wpi-graduate-students-land-roles-mass-tech-agency-after-project-success',
+    summary: "WPI profiled our Graduate Qualifying Project: privacy-preserving synthetic data generation for the Massachusetts Executive Office of Technology Services and Security. The work led EOTSS to hire all three of us full-time as Data & AI Product Analysts.",
+    quote: { text: 'Their success wasn’t just academic—it was transformative.', by: 'Fatemeh Emdad, Teaching Professor of Data Science, WPI' },
+    image: '/images/orgs/wpi.webp',
+  },
 ];
 
 // photo: optional proof photo (see scripts/org-photos.mjs); focus: CSS object-position for the thumbnail crop.
