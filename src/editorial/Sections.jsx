@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useInView, useScroll, useTransform } from 'motion/react';
 import { about, achievements, experience, education, kpis, organizations, process, profile } from '../data.js';
 import { submitContact } from '../lib/contact.js';
-import { ArrowUpRight, BlurHeading, ease, FadeUp, glyphs, Pill } from './ui.jsx';
+import { lockScroll } from '../lib/smoothScroll.js';
+import { ArrowUpRight, BlurHeading, ease, FadeUp, glyphs, Pill, Plus } from './ui.jsx';
 
 /* ---------- organisations strip ---------- */
 export function Orgs() {
@@ -213,7 +214,43 @@ export function Experience() {
 }
 
 /* ---------- achievements (dark) ---------- */
+
+// Full-size photo viewer for the highlights.
+function Lightbox({ item, onClose }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    const prev = document.activeElement;
+    closeRef.current?.focus();
+    lockScroll(true);
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => {
+      lockScroll(false);
+      window.removeEventListener('keydown', onKey);
+      prev?.focus?.({ preventScroll: true });
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div className="ed-lightbox" role="dialog" aria-modal="true" aria-label={item.title} onClick={onClose} data-lenis-prevent
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.figure onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.92, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.5, ease }}>
+        <img src={item.photo} alt={item.caption || item.title} />
+        <figcaption>
+          <strong>{item.title}</strong> · {item.meta}{item.year && ` · ${item.year}`}
+          {item.caption && <span>{item.caption}</span>}
+        </figcaption>
+      </motion.figure>
+      <button ref={closeRef} className="ed-modal-close" onClick={onClose} aria-label="Close photo"><Plus /></button>
+    </motion.div>
+  );
+}
+
 export function Achievements() {
+  const [open, setOpen] = useState(null);
+  const close = useCallback(() => setOpen(null), []);
   return (
     <section className="ed-section ed-dark">
       <div className="ed-wrap">
@@ -226,9 +263,16 @@ export function Achievements() {
             <motion.article key={a.title} className="ed-ach"
               initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.8, ease, delay: (i % 2) * 0.1 }}>
-              <motion.div className="ed-ach-tile" whileHover={{ rotate: 90 }} transition={{ duration: 0.5, ease }}>
-                <span className="ed-glyph">{glyphs[i % glyphs.length]}</span>
-              </motion.div>
+              {a.photo ? (
+                <button className="ed-ach-tile has-photo" onClick={() => setOpen(a)} aria-label={`View photo: ${a.title}`}>
+                  <img src={a.photo} alt="" loading="lazy" style={{ objectPosition: a.focus }} />
+                  <span className="ed-ach-view" aria-hidden="true">View <ArrowUpRight /></span>
+                </button>
+              ) : (
+                <div className="ed-ach-tile">
+                  <motion.span className="ed-glyph" whileHover={{ rotate: 90 }} transition={{ duration: 0.5, ease }}>{glyphs[i % glyphs.length]}</motion.span>
+                </div>
+              )}
               <div className="ed-ach-body">
                 <h3>{a.title}</h3>
                 <dl>
@@ -240,6 +284,7 @@ export function Achievements() {
           ))}
         </div>
       </div>
+      <AnimatePresence>{open && <Lightbox item={open} onClose={close} />}</AnimatePresence>
     </section>
   );
 }

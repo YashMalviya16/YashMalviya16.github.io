@@ -338,12 +338,29 @@ export const process = [
   { title: 'Ship & sustain', text: 'MLOps, documentation and stakeholder reviews, so it keeps running after launch.' },
 ];
 
+// photo: optional proof photo (see scripts/org-photos.mjs); focus: CSS object-position for the thumbnail crop.
 export const achievements = [
+  {
+    title: 'Co-Convenor, Student Programs', meta: 'Legacy 250 Initiative', kind: 'Leadership', year: '',
+    photo: '/images/highlights/legacy250.webp', focus: '50% 97%',
+    caption: 'Shared Legacy USA–India 250 at the Minuteman statue, Lexington Battle Green',
+  },
+  {
+    title: 'Judge, Hack for Human Impact', meta: 'WPI × Commonwealth of MA', kind: 'Hackathon', year: '2025',
+    photo: '/images/highlights/hack-for-human-impact.webp', focus: '50% 45%',
+    caption: 'Hack for Human Impact innovation sprint, with EOTSS, the MA AI Hub and WPI',
+  },
+  {
+    title: 'Speaker', meta: 'Commonwealth of MA × WPI', kind: 'Talk', year: '2025',
+    photo: '/images/highlights/speaker-commonwealth-wpi.webp', focus: '70% 50%',
+    caption: 'Presenting project deliverables to Commonwealth stakeholders',
+  },
+  {
+    title: 'Event Coordinator', meta: 'MIT Bitcoin Hackathon & Expo', kind: 'Community', year: '2025',
+    photo: '/images/highlights/mit-bitcoin.webp', focus: '50% 40%',
+    caption: 'With the organising team at the MIT Bitcoin Hackathon & Expo',
+  },
   { title: 'First-author publication', meta: 'Privacy-preserving synthetic EHR', kind: 'Research', year: '' },
-  { title: 'Judge, Hack for Human Impact', meta: 'WPI × Commonwealth of MA', kind: 'Hackathon', year: '2025' },
-  { title: 'Speaker', meta: 'Commonwealth of MA × WPI', kind: 'Talk', year: '2025' },
-  { title: 'Event Coordinator', meta: 'MIT Bitcoin Hackathon & Expo', kind: 'Community', year: '2025' },
-  { title: 'Co-Convenor, Student Programs', meta: 'Legacy 250 Initiative', kind: 'Leadership', year: '' },
   { title: '4.0 GPA', meta: 'M.S. Data Science, WPI', kind: 'Academic', year: '2025' },
 ];
 
