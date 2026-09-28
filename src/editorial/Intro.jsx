@@ -157,10 +157,28 @@ export default function Intro({ onReveal, onDone }) {
               ))}
             </h1>
             <motion.div className="ed-intro-actions" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 0.8, ease }}>
-              <button ref={enterRef} className="ed-intro-enter" onClick={() => enter(true)} aria-label="Enter with sound">
-                <span className="ed-intro-ring" aria-hidden="true" />
-                Enter
-                <small>with sound</small>
+              <button ref={enterRef} className="ei" onClick={() => enter(true)} aria-label="Enter with sound">
+                {/* HUD dial: tick ring, counter-rotating arcs, orbiting light, radar sweep, glass core */}
+                <span className="ei-bracket tl" aria-hidden="true" /><span className="ei-bracket tr" aria-hidden="true" />
+                <span className="ei-bracket bl" aria-hidden="true" /><span className="ei-bracket br" aria-hidden="true" />
+                <span className="ei-sweep" aria-hidden="true" />
+                <svg className="ei-rings" viewBox="0 0 200 200" aria-hidden="true">
+                  <g className="ei-spin-slow">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#fff" strokeOpacity="0.45" strokeWidth="6" strokeDasharray="1 5.2" />
+                    <circle cx="100" cy="5" r="3" fill="#ff8a5c" />
+                  </g>
+                  <g className="ei-spin-rev">
+                    <circle cx="100" cy="100" r="84" fill="none" stroke="#ff6a3d" strokeWidth="2.5" strokeDasharray="70 62" strokeLinecap="round" />
+                  </g>
+                  <g className="ei-spin-fast">
+                    <circle cx="100" cy="100" r="76" fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth="1" strokeDasharray="18 10 4 10" />
+                  </g>
+                </svg>
+                <span className="ei-core">
+                  <span className="ei-eq" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+                  <strong>Enter</strong>
+                  <small>Sound · On</small>
+                </span>
               </button>
               <button className="ed-intro-silent" onClick={() => enter(false)}>Enter without sound</button>
             </motion.div>
