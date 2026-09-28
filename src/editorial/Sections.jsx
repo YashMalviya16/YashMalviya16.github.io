@@ -1,8 +1,7 @@
-import { useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react';
-import { about, achievements, experience, education, organizations, process, profile } from '../data.js';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, animate, motion, useInView, useScroll, useTransform } from 'motion/react';
+import { about, achievements, experience, education, kpis, organizations, process, profile } from '../data.js';
 import { submitContact } from '../lib/contact.js';
-import { Counter } from '../components/ScrollText.jsx';
 import { ArrowUpRight, BlurHeading, ease, FadeUp, glyphs, Pill } from './ui.jsx';
 
 /* ---------- organisations strip ---------- */
@@ -51,15 +50,65 @@ export function Intro() {
               Hi, I'm {profile.name.split(' ')[0]}, a {profile.role} at the {profile.org}. {about.statement}
             </FadeUp>
             {about.bio.map((b, i) => <FadeUp as="p" className="ed-intro-body" key={i} delay={0.1 + i * 0.1}>{b}</FadeUp>)}
-            <div className="ed-stats">
-              {about.stats.map((s, i) => (
-                <FadeUp key={s.label} className="ed-stat" delay={i * 0.1}>
-                  <span className="ed-stat-label"><i /> {s.label}</span>
-                  <Counter value={s.value} />
-                </FadeUp>
-              ))}
-            </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- impact in numbers ---------- */
+
+// Counts up to values like '$1.2M', '35K', '99.89%', '<2%' the first time they scroll into view.
+function KpiValue({ value }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const m = String(value).match(/^([^\d]*)([\d.,]+)(.*)$/);
+  const target = m ? parseFloat(m[2].replace(/,/g, '')) : 0;
+  const decimals = m && m[2].includes('.') ? m[2].split('.')[1].length : 0;
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!inView || !m) return;
+    const c = animate(0, target, { duration: 1.8, ease: [0.22, 1, 0.36, 1], onUpdate: setN });
+    return () => c.stop();
+  }, [inView]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <strong ref={ref}>
+      {m ? <>{m[1]}{n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}{m[3]}</> : value}
+    </strong>
+  );
+}
+
+export function Kpis() {
+  return (
+    <section id="impact" className="ed-section ed-kpi-section">
+      <div className="ed-wrap">
+        <div className="ed-split-head">
+          <div>
+            <Pill>Impact</Pill>
+            <BlurHeading text="Impact in|numbers" />
+          </div>
+          <FadeUp as="p" className="ed-muted">Measured results from production AI, research and analytics work, 2021 to today.</FadeUp>
+        </div>
+
+        <div className="ed-kpis">
+          {kpis.map((k, i) => (
+            <motion.article
+              key={k.label}
+              className={`ed-kpi ${k.featured ? 'is-featured' : ''}`}
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.8, ease, delay: (i % 4) * 0.08 }}
+              whileHover={{ y: -6 }}
+            >
+              <span className="ed-kpi-label"><i aria-hidden="true" /> {k.label}</span>
+              <KpiValue value={k.value} />
+              <p className="ed-kpi-context">{k.context}</p>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>

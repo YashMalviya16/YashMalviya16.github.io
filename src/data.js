@@ -303,6 +303,24 @@ export const leadership = [
 
 // ---- Editorial version extras ----
 
+// "Impact in numbers". Figures come from your résumé and project write-ups; keep them accurate.
+// value: prefix + number + suffix, e.g. '$1.2M', '35K', '99.89%', '<2%'. featured: shown as the big orange card.
+export const kpis = [
+  { value: '$1.2M', label: 'revenue generated', context: 'GAN models deployed on AWS at Availity', featured: true },
+  { value: '2M+', label: 'synthetic health records', context: 'generated with under 2% statistical drift' },
+  { value: '22%', label: 'better forecast accuracy', context: 'retail demand models at TCS' },
+  { value: '18%', label: 'synthetic data quality lift', context: 'GANs in production at Availity' },
+  { value: '25+', label: 'healthcare databases analysed', context: 'data quality and trend analysis' },
+  { value: '35K', label: 'annotated medical images', context: 'pneumonia and tumour models, NIH data' },
+  { value: '40+', label: 'research papers reviewed', context: 'in 5 months of synthetic-data research' },
+  { value: '99.89%', label: 'clean synthetic data', context: 'diffusion model with a binary-matrix step' },
+  { value: '10+', label: 'engineers collaborated with', context: 'data science and DevOps teams' },
+  { value: '5+', label: 'years in data and AI', context: 'government, healthcare and retail' },
+  { value: '6', label: 'statewide data sources unified', context: 'Service Atlas for the Commonwealth' },
+  { value: '35+', label: 'tools and frameworks', context: 'LLMs to MLOps, Snowflake to Tableau' },
+  { value: '4.0', label: 'GPA, M.S. Data Science', context: 'Worcester Polytechnic Institute' },
+];
+
 // Shown as a wordmark strip under the hero (plain text, not logos).
 export const organizations = [
   'Commonwealth of Massachusetts',
