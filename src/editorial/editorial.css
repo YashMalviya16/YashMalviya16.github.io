@@ -503,6 +503,12 @@ h1, h2, h3, p { margin: 0; }
 .ed-intro-silent { border: 0; background: none; color: rgb(255 255 255 / 0.6); cursor: pointer; font-size: 0.85rem; text-decoration: underline; text-underline-offset: 4px; }
 .ed-intro-silent:hover { color: #fff; }
 .ed-intro-hint { position: absolute; bottom: 28px; left: 0; right: 0; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255 255 255 / 0.4); }
+@media (max-height: 620px) {
+  .ed-intro-hint { display: none; }
+  .ed-intro-gate { gap: 16px; }
+  .ed-intro-title { font-size: clamp(2.4rem, 8vw, 5rem); }
+  .ed-intro-enter { width: 104px; height: 104px; }
+}
 .ed-intro-skip {
   position: absolute; top: 22px; right: 24px; z-index: 2; border: 1px solid rgb(255 255 255 / 0.25); background: rgb(255 255 255 / 0.06);
   color: rgb(255 255 255 / 0.8); padding: 8px 16px; border-radius: 99px; font-size: 0.8rem; cursor: pointer; backdrop-filter: blur(6px);
