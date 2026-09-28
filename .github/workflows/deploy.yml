@@ -24,7 +24,11 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - name: Check imports and asset paths (case-sensitive)
+        run: node scripts/check-deploy.mjs
       - run: npm run build
+      - name: Check built site
+        run: node scripts/check-deploy.mjs --dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
