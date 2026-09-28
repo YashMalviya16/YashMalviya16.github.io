@@ -15,6 +15,8 @@ export const profile = {
   // While empty, the contact form opens the visitor's email app instead of sending directly.
   web3formsKey: '',
   portrait: '/images/portrait.webp',
+  // Photo in the editorial About section (the second photo, after the hero cut-out).
+  aboutPhoto: '/images/portrait-about.webp',
   // Optional background video for the hero (e.g. '/videos/hero.mp4' in public/videos).
   // Keep it short, muted-friendly and under ~4 MB. When empty, the animated network canvas is used.
   heroVideo: '',

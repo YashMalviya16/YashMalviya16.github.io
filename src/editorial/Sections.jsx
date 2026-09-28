@@ -44,7 +44,7 @@ export function Intro() {
 
         <div className="ed-intro-grid">
           <motion.div className="ed-intro-photo" style={{ y: photoY }}>
-            <img src="/images/portrait.webp" alt={profile.name} loading="lazy" />
+            <img src={profile.aboutPhoto} alt={`${profile.name} on campus`} width="400" height="400" loading="lazy" />
           </motion.div>
           <div>
             <FadeUp as="p" className="ed-intro-lead">
