@@ -3,6 +3,7 @@ import { AnimatePresence, animate, motion, useInView, useScroll, useTransform } 
 import { about, achievements, experience, education, kpis, organizations, press, process, profile } from '../data.js';
 import { submitContact } from '../lib/contact.js';
 import { lockScroll } from '../lib/smoothScroll.js';
+import ProcessVideo from './ProcessVideo.jsx';
 import { ArrowUpRight, BlurHeading, ease, FadeUp, glyphs, Pill, Plus } from './ui.jsx';
 
 /* ---------- organisations strip ---------- */
@@ -123,6 +124,7 @@ export function Process() {
       <div className="ed-wrap is-center">
         <Pill>How I work</Pill>
         <BlurHeading text="A process|that ships" center />
+        <FadeUp className="ed-pv-wrap"><ProcessVideo /></FadeUp>
         <div className="ed-process">
           {process.map((step, i) => (
             <motion.article
