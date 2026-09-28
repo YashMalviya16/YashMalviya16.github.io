@@ -28,9 +28,9 @@ export default function EditorialApp() {
         <About />
         <Kpis />
         <Experience />
+        <Achievements />
         <Work />
         <Process />
-        <Achievements />
         <Toolkit />
         <Contact />
       </main>
